@@ -19,10 +19,10 @@ def call(Map configMap){
         }
         // Build
         stages {
-            stage('Read version') {
+            stage('Read pom.xml') {
                 steps {
                     script {
-                        appVersion = readFile('version').trim()
+                        appVersion = readMavenPom().getVersion()
                         echo "app version: ${appVersion}"
                     }
                 }
@@ -31,7 +31,7 @@ def call(Map configMap){
                 steps {
                     script {
                     sh """
-                        pip3 install -r requirements.txt
+                        mvn clean package 
                     """
                     }
                 }
